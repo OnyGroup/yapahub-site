@@ -1,0 +1,521 @@
+import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, Send, HelpCircle, Loader2 } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import Select from 'react-select';
+import ReCAPTCHA from 'react-google-recaptcha';
+import toast, { Toaster } from 'react-hot-toast';
+import { counties, industries, departments, roles, challenges } from './formData';
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  country: string;
+  county: string;
+  industry: string;
+  department: string;
+  role: string;
+  challenges: string[];
+  honeypot: string;
+}
+
+function Contact() {
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    country: '',
+    county: '',
+    industry: '',
+    department: '',
+    role: '',
+    challenges: [],
+    honeypot: '', // Honeypot field for spam prevention
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [errors, setErrors] = useState<Partial<FormData>>({});
+
+  const validateForm = () => {
+    const newErrors: Partial<FormData> = {};
+
+    if (formData.name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters long';
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number is required';
+    }
+    if (!formData.company) {
+      newErrors.company = 'Company name is required';
+    }
+    if (!formData.country) {
+      newErrors.country = 'Country is required';
+    }
+    if (formData.country === 'Kenya' && !formData.county) {
+      newErrors.county = 'County is required for Kenya';
+    }
+    if (!formData.industry) {
+      newErrors.industry = 'Industry is required';
+    }
+    if (!formData.department) {
+      newErrors.department = 'Department is required';
+    }
+    if (!formData.role) {
+      newErrors.role = 'Role is required';
+    }
+    if (formData.challenges.length === 0) {
+      newErrors.challenges = 'Please select at least one challenge';
+    }
+    if (formData.challenges.length > 3) {
+      newErrors.challenges = 'Please select no more than 3 challenges';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.honeypot) {
+      // If honeypot field is filled, silently reject the submission
+      return;
+    }
+
+    if (!validateForm()) {
+      toast.error('Please check the form for errors');
+      return;
+    }
+
+    const recaptchaValue = await recaptchaRef.current?.executeAsync();
+    if (!recaptchaValue) {
+      toast.error('Please verify that you are human');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'b4aa257b-307a-4313-88b8-414e2203aedf',
+          ...formData,
+          'g-recaptcha-response': recaptchaValue,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+        toast.success('Form submitted successfully!');
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      country: '',
+      county: '',
+      industry: '',
+      department: '',
+      role: '',
+      challenges: [],
+      honeypot: '',
+    });
+    setSubmitted(false);
+    setErrors({});
+  };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-[#020220] text-white flex items-center justify-center">
+        <div className="max-w-md w-full mx-auto p-8">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-[#FF4500] rounded-full flex items-center justify-center mx-auto mb-6">
+              <Send className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold mb-4">Thank You for Joining!</h2>
+            <p className="text-gray-300 mb-8">
+              Your application has been received. We'll be in touch soon to schedule your demo and discuss how Yapa Hub can transform your business.
+            </p>
+            <div className="space-x-4">
+              <button
+                onClick={handleReset}
+                className="px-6 py-3 bg-[#FF4500] text-white rounded-lg font-semibold hover:bg-[#E63F00] transition"
+              >
+                Submit Another Response
+              </button>
+              <Link
+                to="/"
+                className="inline-flex items-center text-[#FF4500] hover:text-[#E63F00] transition"
+              >
+                <ArrowLeft className="h-5 w-5 mr-2" />
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#020220] text-white">
+      <Toaster position="top-right" />
+      <div className="container mx-auto px-6 py-12">
+        <Link
+          to="/"
+          className="inline-flex items-center text-gray-300 hover:text-white mb-8 transition"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Back to Home
+        </Link>
+
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4">Join the Waitlist</h1>
+          <p className="text-gray-300 mb-8">
+            Complete the form below to join our waiting list and be among the first to experience Yapa Hub's AI-powered customer experience platform.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Honeypot field */}
+            <input
+              type="text"
+              name="honeypot"
+              style={{ display: 'none' }}
+              value={formData.honeypot}
+              onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+            />
+
+            {/* Personal Information */}
+            <div className="space-y-6">
+              <h2 className="text-xl font-semibold">Personal Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    minLength={2}
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? 'name-error' : undefined}
+                  />
+                  {errors.name && (
+                    <p id="name-error" className="mt-1 text-sm text-red-500">
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                  />
+                  {errors.email && (
+                    <p id="email-error" className="mt-1 text-sm text-red-500">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                    Phone Number *
+                  </label>
+                  <PhoneInput
+                    country={'ke'}
+                    value={formData.phone}
+                    onChange={(phone) => setFormData({ ...formData, phone })}
+                    inputProps={{
+                      required: true,
+                      className: 'w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white',
+                    }}
+                  />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium mb-2">
+                    Company Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    required
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white"
+                  />
+                  {errors.company && (
+                    <p className="mt-1 text-sm text-red-500">{errors.company}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Company Details */}
+            <div className="space-y-6">
+              <h2 className="text-xl font-semibold">Company Details</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="country" className="block text-sm font-medium mb-2">
+                    Country *
+                  </label>
+                  <Select
+                    id="country"
+                    value={{ value: formData.country, label: formData.country }}
+                    onChange={(option) => setFormData({ ...formData, country: option?.value || '' })}
+                    options={[
+                      { value: 'Kenya', label: 'Kenya' },
+                      { value: 'Tanzania', label: 'Tanzania' },
+                      { value: 'Uganda', label: 'Uganda' },
+                      { value: 'Nigeria', label: 'Nigeria' },
+                      { value: 'South Africa', label: 'South Africa' },
+                      // Add more African countries as needed
+                    ]}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary: '#FF4500',
+                        primary25: '#FF450020',
+                        neutral0: '#1a1a1a',
+                        neutral80: '#ffffff',
+                      },
+                    })}
+                  />
+                  {errors.country && (
+                    <p className="mt-1 text-sm text-red-500">{errors.country}</p>
+                  )}
+                </div>
+                {formData.country === 'Kenya' && (
+                  <div>
+                    <label htmlFor="county" className="block text-sm font-medium mb-2">
+                      County *
+                    </label>
+                    <Select
+                      id="county"
+                      value={{ value: formData.county, label: formData.county }}
+                      onChange={(option) => setFormData({ ...formData, county: option?.value || '' })}
+                      options={counties.map(county => ({ value: county, label: county }))}
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          primary: '#FF4500',
+                          primary25: '#FF450020',
+                          neutral0: '#1a1a1a',
+                          neutral80: '#ffffff',
+                        },
+                      })}
+                    />
+                    {errors.county && (
+                      <p className="mt-1 text-sm text-red-500">{errors.county}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="industry" className="block text-sm font-medium mb-2">
+                    Industry *
+                  </label>
+                  <Select
+                    id="industry"
+                    value={{ value: formData.industry, label: formData.industry }}
+                    onChange={(option) => setFormData({ ...formData, industry: option?.value || '' })}
+                    options={industries.map(industry => ({ value: industry, label: industry }))}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary: '#FF4500',
+                        primary25: '#FF450020',
+                        neutral0: '#1a1a1a',
+                        neutral80: '#ffffff',
+                      },
+                    })}
+                  />
+                  {errors.industry && (
+                    <p className="mt-1 text-sm text-red-500">{errors.industry}</p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="department" className="block text-sm font-medium mb-2">
+                    Department *
+                  </label>
+                  <Select
+                    id="department"
+                    value={{ value: formData.department, label: formData.department }}
+                    onChange={(option) => setFormData({ ...formData, department: option?.value || '' })}
+                    options={departments.map(dept => ({ value: dept, label: dept }))}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary: '#FF4500',
+                        primary25: '#FF450020',
+                        neutral0: '#1a1a1a',
+                        neutral80: '#ffffff',
+                      },
+                    })}
+                  />
+                  {errors.department && (
+                    <p className="mt-1 text-sm text-red-500">{errors.department}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Role and Challenges */}
+            <div className="space-y-6">
+              <div>
+                <label htmlFor="role" className="block text-sm font-medium mb-2">
+                  Your Role *
+                </label>
+                <Select
+                  id="role"
+                  value={{ value: formData.role, label: formData.role }}
+                  onChange={(option) => setFormData({ ...formData, role: option?.value || '' })}
+                  options={roles.map(role => ({ value: role, label: role }))}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: '#FF4500',
+                      primary25: '#FF450020',
+                      neutral0: '#1a1a1a',
+                      neutral80: '#ffffff',
+                    },
+                  })}
+                />
+                {errors.role && (
+                  <p className="mt-1 text-sm text-red-500">{errors.role}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Top Business Challenges * (Select up to 3)
+                  <button
+                    type="button"
+                    className="ml-2 text-gray-400 hover:text-white"
+                    aria-label="Help"
+                    title="Select your top 3 business challenges that you'd like to address with our platform"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                  </button>
+                </label>
+                <Select
+                  isMulti
+                  value={formData.challenges.map(c => ({ value: c, label: c }))}
+                  onChange={(options) => setFormData({
+                    ...formData,
+                    challenges: options.map(o => o.value)
+                  })}
+                  options={challenges.map(challenge => ({ value: challenge, label: challenge }))}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary: '#FF4500',
+                      primary25: '#FF450020',
+                      neutral0: '#1a1a1a',
+                      neutral80: '#ffffff',
+                    },
+                  })}
+                />
+                {errors.challenges && (
+                  <p className="mt-1 text-sm text-red-500">{errors.challenges}</p>
+                )}
+              </div>
+            </div>
+
+            {/* ReCAPTCHA and Submit */}
+            <div className="space-y-6">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey="YOUR_RECAPTCHA_SITE_KEY"
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full px-8 py-4 bg-[#FF4500] text-white rounded-lg font-semibold hover:bg-[#E63F00] transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    Join Waitlist <Send className="ml-2 h-5 w-5" />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Contact;

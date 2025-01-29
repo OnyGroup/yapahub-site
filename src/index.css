@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Improved focus styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-[#FF4500] ring-offset-2 ring-offset-[#020220];
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improved form control styles */
+.react-select-container .react-select__control {
+  @apply bg-white/5 border-white/10 hover:border-[#FF4500] transition-colors duration-200 !important;
+}
+
+.react-select-container .react-select__menu {
+  @apply bg-[#1a1a1a] border border-white/10 !important;
+}
+
+.react-select-container .react-select__option {
+  @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200 !important;
+}
+
+.react-select-container .react-select__option--is-selected {
+  @apply bg-[#FF4500] !important;
+}
+
+.react-select-container .react-select__multi-value {
+  @apply bg-[#FF4500]/20 !important;
+}
+
+.react-select-container .react-select__multi-value__label {
+  @apply text-white !important;
+}
+
+.react-select-container .react-select__multi-value__remove {
+  @apply text-white hover:bg-[#FF4500] hover:text-white transition-colors duration-200 !important;
+}
+
+/* Phone input styles */
+.react-phone-input-2 {
+  @apply w-full !important;
+}
+
+.react-phone-input-2 .form-control {
+  @apply w-full bg-white/5 border-white/10 text-white transition-colors duration-200 !important;
+}
+
+.react-phone-input-2 .country-list {
+  @apply bg-[#1a1a1a] !important;
+}
+
+.react-phone-input-2 .country-list .country {
+  @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200 !important;
+}
+
+.react-phone-input-2 .selected-flag {
+  @apply bg-transparent hover:bg-white/5 transition-colors duration-200 !important;
+}
+
+.react-phone-input-2 .country-list .country.highlight {
+  @apply bg-[#FF4500] !important;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
