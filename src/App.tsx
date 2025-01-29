@@ -1,16 +1,24 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import { ChevronRight, ShoppingBag, HeadphonesIcon, UsersRound, Share2, Megaphone, BarChart3, Zap } from 'lucide-react';
-import Contact from './Contact';
+import React from "react"
+import { Routes, Route, Link } from "react-router-dom"
+import { ChevronRight, ShoppingBag, HeadphonesIcon, UsersRound, Share2, Megaphone, BarChart3, Zap } from "lucide-react"
+import Contact from "./Contact"
+import Header from "./components/header"
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/contact" element={<Contact />} />
-    </Routes>
-  );
+    <div className="min-h-screen bg-gradient-to-b from-[#020220] to-black text-white dark:from-gray-900 dark:to-black">
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </div>
+  )
 }
+
+// ... rest of your code remains the same
+
+
 
 function HomePage() {
   return (
