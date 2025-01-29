@@ -1,20 +1,30 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import { ChevronRight, ShoppingBag, HeadphonesIcon, UsersRound, Share2, Megaphone, BarChart3, Zap } from 'lucide-react';
-import Contact from './Contact';
+import { Routes, Route, Link } from "react-router-dom"
+import { ChevronRight, ShoppingBag, HeadphonesIcon, UsersRound, Share2, Megaphone, BarChart3, Zap } from "lucide-react"
+import Contact from "./Contact"
+import Header from "./components/header"
+
+interface FeatureCardProps {
+  icon: React.ReactNode
+  title: string
+  description: string
+  benefits: string[]
+}
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/contact" element={<Contact />} />
-    </Routes>
-  );
+    <div className="min-h-screen bg-yapa-dark text-white transition-colors duration-300 dark:bg-yapa-dark dark:text-white light:bg-yapa-light light:text-yapa-dark">
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </div>
+  )
 }
 
 function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#020220] to-black text-white">
+    <div className="min-h-screen bg-gradient-to-b from-yapa-dark to-black text-white light:from-yapa-light light:to-gray-100 light:text-yapa-dark">
       <main id="main-content">
         {/* Hero Section */}
         <header className="container mx-auto px-4 sm:px-6 py-16 md:py-24">
@@ -118,7 +128,7 @@ function HomePage() {
               <h2 id="success-heading" className="text-3xl font-bold mb-4">Trusted Across Africa</h2>
               <p className="text-gray-300">Empowering businesses from Cairo to Cape Town</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-60">
+            {/*<div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-60">
               {[1, 2, 3, 4].map((index) => (
                 <img
                   key={index}
@@ -130,7 +140,7 @@ function HomePage() {
                   height="64"
                 />
               ))}
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -166,10 +176,12 @@ function HomePage() {
   );
 }
 
-function FeatureCard({ icon, title, description, benefits }) {
+function FeatureCard({ icon, title, description, benefits }: FeatureCardProps) {
   return (
     <div className="p-6 rounded-xl border border-white/10 hover:border-[#FF4500]/50 transition-colors duration-200 bg-white/5 backdrop-blur-sm focus-within:ring-2 focus-within:ring-[#FF4500]/50">
-      <div className="mb-4" aria-hidden="true">{icon}</div>
+      <div className="mb-4" aria-hidden="true">
+        {icon}
+      </div>
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-gray-300 mb-4">{description}</p>
       <ul className="space-y-2" role="list">
@@ -181,7 +193,7 @@ function FeatureCard({ icon, title, description, benefits }) {
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

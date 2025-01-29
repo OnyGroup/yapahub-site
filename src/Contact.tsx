@@ -73,10 +73,10 @@ function Contact() {
       newErrors.role = 'Role is required';
     }
     if (formData.challenges.length === 0) {
-      newErrors.challenges = 'Please select at least one challenge';
+      newErrors.challenges = ['Please select at least one challenge'];
     }
     if (formData.challenges.length > 3) {
-      newErrors.challenges = 'Please select no more than 3 challenges';
+      newErrors.challenges = ['Please select no more than 3 challenges'];
     }
 
     setErrors(newErrors);
