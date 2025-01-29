@@ -12,6 +12,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Dark mode styles */
+.dark body {
+  @apply bg-gray-900 text-white;
+}
+
+.dark .bg-white\/5 {
+  @apply bg-gray-800/50;
+}
+
+.dark .border-white\/10 {
+  @apply border-gray-700;
+}
+
 /* Improved form control styles */
 .react-select-container .react-select__control {
   @apply bg-white/5 border-white/10 hover:border-[#FF4500] transition-colors duration-200 !important;
