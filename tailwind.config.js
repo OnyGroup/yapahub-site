@@ -47,6 +47,8 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "yapa-dark": "#020220", // dark blue/navy blue color
+        "yapa-light": "#FFFFFF", // White color for light mode
       },
       borderRadius: {
         lg: "var(--radius)",

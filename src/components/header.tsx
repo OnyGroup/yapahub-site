@@ -3,18 +3,20 @@ import { useState, useEffect } from "react"
 import { Moon, Sun } from "lucide-react"
 
 const Header: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false)
+  const [isDark, setIsDark] = useState(true)
 
   useEffect(() => {
-    if (darkMode) {
+    if (isDark) {
       document.documentElement.classList.add("dark")
+      document.documentElement.classList.remove("light")
     } else {
+      document.documentElement.classList.add("light")
       document.documentElement.classList.remove("dark")
     }
-  }, [darkMode])
+  }, [isDark])
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
+  const toggleTheme = () => {
+    setIsDark(!isDark)
   }
 
   return (
@@ -23,11 +25,11 @@ const Header: React.FC = () => {
         <img src="/images/Logo.svg" alt="Yapa Hub Logo" width="118" height="38" />
       </div>
       <button
-        onClick={toggleDarkMode}
-        className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200"
-        aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+        onClick={toggleTheme}
+        className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 light:bg-yapa-dark/10 light:hover:bg-yapa-dark/20"
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       >
-        {darkMode ? <Sun className="h-5 w-5 text-white" /> : <Moon className="h-5 w-5 text-white" />}
+        {isDark ? <Sun className="h-5 w-5 text-white" /> : <Moon className="h-5 w-5 text-yapa-dark" />}
       </button>
     </header>
   )

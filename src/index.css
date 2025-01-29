@@ -2,89 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Improved focus styles */
-:focus-visible {
-  @apply outline-none ring-2 ring-[#FF4500] ring-offset-2 ring-offset-[#020220];
-}
+@layer base {
+  :root {
+    --select-bg: theme("colors.yapa-dark");
+    --select-text: theme("colors.white");
+    --select-border: theme("colors.white / 0.1");
+    --select-hover: theme("colors.white / 0.1");
+  }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+  .light {
+    --select-bg: theme("colors.white");
+    --select-text: theme("colors.yapa-dark");
+    --select-border: theme("colors.yapa-dark / 0.1");
+    --select-hover: theme("colors.yapa-dark / 0.1");
+  }
 
-/* Dark mode styles */
-.dark body {
-  @apply bg-gray-900 text-white;
-}
+  body {
+    @apply bg-yapa-dark text-white transition-colors duration-300;
+  }
 
-.dark .bg-white\/5 {
-  @apply bg-gray-800/50;
-}
-
-.dark .border-white\/10 {
-  @apply border-gray-700;
-}
-
-/* Improved form control styles */
-.react-select-container .react-select__control {
-  @apply bg-white/5 border-white/10 hover:border-[#FF4500] transition-colors duration-200 !important;
-}
-
-.react-select-container .react-select__menu {
-  @apply bg-[#1a1a1a] border border-white/10 !important;
-}
-
-.react-select-container .react-select__option {
-  @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200 !important;
-}
-
-.react-select-container .react-select__option--is-selected {
-  @apply bg-[#FF4500] !important;
-}
-
-.react-select-container .react-select__multi-value {
-  @apply bg-[#FF4500]/20 !important;
-}
-
-.react-select-container .react-select__multi-value__label {
-  @apply text-white !important;
-}
-
-.react-select-container .react-select__multi-value__remove {
-  @apply text-white hover:bg-[#FF4500] hover:text-white transition-colors duration-200 !important;
-}
-
-/* Phone input styles */
-.react-phone-input-2 {
-  @apply w-full !important;
-}
-
-.react-phone-input-2 .form-control {
-  @apply w-full bg-white/5 border-white/10 text-white transition-colors duration-200 !important;
-}
-
-.react-phone-input-2 .country-list {
-  @apply bg-[#1a1a1a] !important;
-}
-
-.react-phone-input-2 .country-list .country {
-  @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200 !important;
-}
-
-.react-phone-input-2 .selected-flag {
-  @apply bg-transparent hover:bg-white/5 transition-colors duration-200 !important;
-}
-
-.react-phone-input-2 .country-list .country.highlight {
-  @apply bg-[#FF4500] !important;
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  .light body {
+    @apply bg-yapa-light text-yapa-dark;
   }
 }
+
+@layer components {
+  /* Improved focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-[#FF4500] ring-offset-2 ring-offset-[#020220];
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Improved form control styles */
+  .react-select-container .react-select__control {
+    @apply bg-white/5 border-white/10 hover:border-[#FF4500] transition-colors duration-200;
+  }
+
+  .react-select-container .react-select__menu {
+    @apply bg-[#1a1a1a] border border-white/10;
+  }
+
+  .react-select-container .react-select__option {
+    @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200;
+  }
+
+  .react-select-container .react-select__option--is-selected {
+    @apply bg-[#FF4500];
+  }
+
+  .react-select-container .react-select__multi-value {
+    @apply bg-[#FF4500]/20;
+  }
+
+  .react-select-container .react-select__multi-value__label {
+    @apply text-white;
+  }
+
+  .react-select-container .react-select__multi-value__remove {
+    @apply text-white hover:bg-[#FF4500] hover:text-white transition-colors duration-200;
+  }
+
+  /* Phone input styles */
+  .react-phone-input-2 .form-control {
+    @apply w-full bg-white/5 border-white/10 text-white transition-colors duration-300;
+  }
+
+  .light .react-phone-input-2 .form-control {
+    @apply bg-yapa-dark/5 border-yapa-dark/10 text-yapa-dark;
+  }
+
+  .react-phone-input-2 .country-list {
+    @apply bg-yapa-dark;
+  }
+
+  .light .react-phone-input-2 .country-list {
+    @apply bg-white;
+  }
+
+  .react-phone-input-2 .country-list .country {
+    @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200;
+  }
+
+  .light .react-phone-input-2 .country-list .country {
+    @apply text-yapa-dark;
+  }
+
+  .react-phone-input-2 .selected-flag {
+    @apply bg-transparent hover:bg-white/5 transition-colors duration-200;
+  }
+
+  .light .react-phone-input-2 .selected-flag {
+    @apply hover:bg-yapa-dark/5;
+  }
+
+  .react-phone-input-2 .country-list .country.highlight {
+    @apply bg-[#FF4500];
+  }
+}
+
+@layer utilities {
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
