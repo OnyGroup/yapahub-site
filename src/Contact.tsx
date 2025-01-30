@@ -4,7 +4,6 @@ import { ArrowLeft, Send, HelpCircle, Loader2 } from 'lucide-react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import Select from 'react-select';
-import ReCAPTCHA from 'react-google-recaptcha';
 import toast, { Toaster } from 'react-hot-toast';
 import { counties, industries, departments, roles, challenges } from './formData';
 
@@ -39,7 +38,6 @@ function Contact() {
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
   const validateForm = () => {
@@ -96,12 +94,6 @@ function Contact() {
       return;
     }
 
-    const recaptchaValue = await recaptchaRef.current?.executeAsync();
-    if (!recaptchaValue) {
-      toast.error('Please verify that you are human');
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -113,7 +105,6 @@ function Contact() {
         body: JSON.stringify({
           access_key: 'b4aa257b-307a-4313-88b8-414e2203aedf',
           ...formData,
-          'g-recaptcha-response': recaptchaValue,
         }),
       });
 
@@ -486,14 +477,8 @@ function Contact() {
               </div>
             </div>
 
-            {/* ReCAPTCHA and Submit */}
+            {/* Submit */}
             <div className="space-y-6">
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                size="invisible"
-                sitekey="YOUR_RECAPTCHA_SITE_KEY"
-              />
-
               <button
                 type="submit"
                 disabled={loading}
