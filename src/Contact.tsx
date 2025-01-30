@@ -487,11 +487,11 @@ function Contact() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-medium mb-2 flex items-center gap-1">
                   Top Business Challenges * (Select up to 3)
                   <button
                     type="button"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-gray-900 dark:text-white"
+                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                     aria-label="Help"
                     title="Select your top 3 business challenges that you'd like to address with our platform"
                   >
