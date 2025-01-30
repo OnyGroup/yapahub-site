@@ -32,7 +32,9 @@ const Header: React.FC = () => {
   return (
     <header className="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
       <div className="flex items-center">
+      <a href="/">
         <img src="/images/Logo.svg" alt="Yapa Hub Logo" width="118" height="38" />
+      </a>
       </div>
       <button
         onClick={toggleTheme}
