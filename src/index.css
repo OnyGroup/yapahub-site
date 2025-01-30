@@ -10,8 +10,8 @@
     --select-hover: theme("colors.white / 0.1");
   }
 
-  .light {
-    --select-bg: theme("colors.white");
+  html.light {
+    --select-bg: theme("colors.yapa-light");
     --select-text: theme("colors.yapa-dark");
     --select-border: theme("colors.yapa-dark / 0.1");
     --select-hover: theme("colors.yapa-dark / 0.1");
@@ -21,7 +21,7 @@
     @apply bg-yapa-dark text-white transition-colors duration-300;
   }
 
-  .light body {
+  html.light body {
     @apply bg-yapa-light text-yapa-dark;
   }
 }
@@ -42,12 +42,24 @@
     @apply bg-white/5 border-white/10 hover:border-[#FF4500] transition-colors duration-200;
   }
 
+  html.light .react-select-container .react-select__control {
+    @apply bg-yapa-dark/5 border-yapa-dark/10;
+  }
+
   .react-select-container .react-select__menu {
     @apply bg-[#1a1a1a] border border-white/10;
   }
 
+  html.light .react-select-container .react-select__menu {
+    @apply bg-white border-yapa-dark/10;
+  }
+
   .react-select-container .react-select__option {
     @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200;
+  }
+
+  html.light .react-select-container .react-select__option {
+    @apply text-yapa-dark;
   }
 
   .react-select-container .react-select__option--is-selected {
@@ -62,8 +74,16 @@
     @apply text-white;
   }
 
+  html.light .react-select-container .react-select__multi-value__label {
+    @apply text-yapa-dark;
+  }
+
   .react-select-container .react-select__multi-value__remove {
     @apply text-white hover:bg-[#FF4500] hover:text-white transition-colors duration-200;
+  }
+
+  html.light .react-select-container .react-select__multi-value__remove {
+    @apply text-yapa-dark;
   }
 
   /* Phone input styles */
@@ -71,7 +91,7 @@
     @apply w-full bg-white/5 border-white/10 text-white transition-colors duration-300;
   }
 
-  .light .react-phone-input-2 .form-control {
+  html.light .react-phone-input-2 .form-control {
     @apply bg-yapa-dark/5 border-yapa-dark/10 text-yapa-dark;
   }
 
@@ -79,7 +99,7 @@
     @apply bg-yapa-dark;
   }
 
-  .light .react-phone-input-2 .country-list {
+  html.light .react-phone-input-2 .country-list {
     @apply bg-white;
   }
 
@@ -87,7 +107,7 @@
     @apply text-white hover:bg-[#FF4500]/20 transition-colors duration-200;
   }
 
-  .light .react-phone-input-2 .country-list .country {
+  html.light .react-phone-input-2 .country-list .country {
     @apply text-yapa-dark;
   }
 
@@ -95,7 +115,7 @@
     @apply bg-transparent hover:bg-white/5 transition-colors duration-200;
   }
 
-  .light .react-phone-input-2 .selected-flag {
+  html.light .react-phone-input-2 .selected-flag {
     @apply hover:bg-yapa-dark/5;
   }
 
@@ -115,4 +135,3 @@
     }
   }
 }
-

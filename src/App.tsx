@@ -12,7 +12,7 @@ interface FeatureCardProps {
 
 function App() {
   return (
-    <div className="min-h-screen bg-yapa-dark text-white transition-colors duration-300 dark:bg-yapa-dark dark:text-white light:bg-yapa-light light:text-yapa-dark">
+    <div className="min-h-screen bg-yapa-light text-yapa-dark dark:bg-yapa-dark dark:text-white transition-colors duration-300">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -24,7 +24,7 @@ function App() {
 
 function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yapa-dark to-black text-white light:from-yapa-light light:to-gray-100 light:text-yapa-dark">
+    <div className="min-h-screen bg-gradient-to-b from-yapa-light to-gray-100 dark:from-yapa-dark dark:to-black text-yapa-dark dark:text-white">
       <main id="main-content">
         {/* Hero Section */}
         <header className="container mx-auto px-4 sm:px-6 py-16 md:py-24">

@@ -152,14 +152,14 @@ function Contact() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#020220] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[#020220] text-gray-900 dark:text-white flex items-center justify-center">
         <div className="max-w-md w-full mx-auto p-8">
           <div className="text-center">
             <div className="w-16 h-16 bg-[#FF4500] rounded-full flex items-center justify-center mx-auto mb-6">
               <Send className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold mb-4">Thank You for Joining!</h2>
-            <p className="text-gray-300 mb-8">
+            <p className="text-gray-600 dark:text-gray-300 mb-8">
               Your application has been received. We'll be in touch soon to schedule your demo and discuss how Yapa Hub can transform your business.
             </p>
             <div className="space-x-4">
@@ -184,7 +184,7 @@ function Contact() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020220] text-white">
+    <div className="min-h-screen bg-white dark:bg-[#020220] text-gray-900 dark:text-white">
       <Toaster position="top-right" />
       <div className="container mx-auto px-6 py-12">
         <Link
@@ -226,7 +226,7 @@ function Contact() {
                     minLength={2}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-gray-900 dark:text-white"
                     aria-invalid={!!errors.name}
                     aria-describedby={errors.name ? 'name-error' : undefined}
                   />
@@ -246,7 +246,7 @@ function Contact() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-gray-900 dark:text-white"
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? 'email-error' : undefined}
                   />
@@ -286,7 +286,7 @@ function Contact() {
                     required
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-gray-900 dark:text-white"
                   />
                   {errors.company && (
                     <p className="mt-1 text-sm text-red-500">{errors.company}</p>
@@ -323,8 +323,8 @@ function Contact() {
                         ...theme.colors,
                         primary: '#FF4500',
                         primary25: '#FF450020',
-                        neutral0: '#1a1a1a',
-                        neutral80: '#ffffff',
+                        neutral0: document.documentElement.classList.contains('dark') ? '#1a1a1a' : '#ffffff',
+                        neutral80: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
                       },
                     })}
                   />
@@ -350,8 +350,8 @@ function Contact() {
                           ...theme.colors,
                           primary: '#FF4500',
                           primary25: '#FF450020',
-                          neutral0: '#1a1a1a',
-                          neutral80: '#ffffff',
+                          neutral0: document.documentElement.classList.contains('dark') ? '#1a1a1a' : '#ffffff',
+                          neutral80: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
                         },
                       })}
                     />
@@ -380,8 +380,8 @@ function Contact() {
                         ...theme.colors,
                         primary: '#FF4500',
                         primary25: '#FF450020',
-                        neutral0: '#1a1a1a',
-                        neutral80: '#ffffff',
+                        neutral0: document.documentElement.classList.contains('dark') ? '#1a1a1a' : '#ffffff',
+                        neutral80: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
                       },
                     })}
                   />
@@ -406,8 +406,8 @@ function Contact() {
                         ...theme.colors,
                         primary: '#FF4500',
                         primary25: '#FF450020',
-                        neutral0: '#1a1a1a',
-                        neutral80: '#ffffff',
+                        neutral0: document.documentElement.classList.contains('dark') ? '#1a1a1a' : '#ffffff',
+                        neutral80: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
                       },
                     })}
                   />
@@ -437,8 +437,8 @@ function Contact() {
                       ...theme.colors,
                       primary: '#FF4500',
                       primary25: '#FF450020',
-                      neutral0: '#1a1a1a',
-                      neutral80: '#ffffff',
+                      neutral0: document.documentElement.classList.contains('dark') ? '#1a1a1a' : '#ffffff',
+                      neutral80: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
                     },
                   })}
                 />
@@ -452,7 +452,7 @@ function Contact() {
                   Top Business Challenges * (Select up to 3)
                   <button
                     type="button"
-                    className="ml-2 text-gray-400 hover:text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] transition text-gray-900 dark:text-white"
                     aria-label="Help"
                     title="Select your top 3 business challenges that you'd like to address with our platform"
                   >
@@ -475,8 +475,8 @@ function Contact() {
                       ...theme.colors,
                       primary: '#FF4500',
                       primary25: '#FF450020',
-                      neutral0: '#1a1a1a',
-                      neutral80: '#ffffff',
+                      neutral0: document.documentElement.classList.contains('dark') ? '#1a1a1a' : '#ffffff',
+                      neutral80: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
                     },
                   })}
                 />
